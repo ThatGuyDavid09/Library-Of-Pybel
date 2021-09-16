@@ -33,7 +33,7 @@ class BabelClient():
 
     def get_page(self, h, wall, shelf, v, page):
         return self.get_hexagon(h).get_walls()[wall - 1].get_shelves()[shelf - 1].get_books()[v - 1].get_pages()[page - 1]
-    
+        
     def search_raw(self, query):
         data = {
             'find': query,
@@ -60,8 +60,8 @@ class BabelClient():
 
 def main():
     client = BabelClient()
-    
-    print(client.get_page("12", 2, 3, 10, 123).get_content())
+    page = client.get_page("12", 2, 3, 10, 123)
+    print(page)
 
 if __name__ == "__main__":
     main()

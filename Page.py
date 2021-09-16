@@ -15,11 +15,11 @@ class Page():
         self._content = self.init_content()
 
     def init_content(self):
-        hexagon = self.lower()
+        hexagon = self.hex.lower()
         volume = self.book
 
         if int(volume) <= 9:
-            volume = "0" + volume
+            volume = "0" + str(volume)
 
         if not self.client.check_valid_format(hexagon):
             raise ValueError("Hexagon format invalid")

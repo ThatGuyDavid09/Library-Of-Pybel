@@ -6,13 +6,12 @@ import requests
 class Shelf():
     def __init__(self, hex, wall, shelf_num):
         from py_babel_library import BabelClient
-        from Book import Book
 
         self.hex  = hex
         self.wall = wall
         self.shelf_num = shelf_num
         self.client = BabelClient()
-        self._books = self.client.get_books(hex, wall, shelf_num)
+        self._books = self.init_books()
     
     def init_books(self):
         if not self.client.check_valid_format(self.hex):
@@ -26,12 +25,12 @@ class Shelf():
         data = {
         'hex': str(self.hex),
         'wall': str(self.wall),
-        'shelf': str(self.shelf)
+        'shelf': str(self.shelf_num)
         }
 
         r = requests.post('https://libraryofbabel.info/titler.cgi', data=data)
         titles = r.text.split(";")
-        return [Book(self.hex, int(self.wall), int(self.shelf), i, titles[i-1]) for i in range(1, 33)]
+        return [Book.Book(self.hex, int(self.wall), int(self.shelf_num), i, titles[i-1]) for i in range(1, 33)]
 
     def get_books(self):
         return self._books.copy()
