@@ -11,11 +11,11 @@ class Shelf():
         self.wall = wall
         self.shelf_num = shelf_num
         self.client = BabelClient()
-        self._books = self.init_books()
+        self._books = None
     
     def init_books(self):
         if not self.client.check_valid_format(self.hex):
-            raise ValueError("Hexagon format invalid")
+            raise ValueError(f"Hexagon format {self.hex} invalid")
             
         if not self.client.check_in_bounds(self.wall, self.shelf_num, 1, 1):
             raise ValueError("Arguments not in bounds")
@@ -28,9 +28,17 @@ class Shelf():
         'shelf': str(self.shelf_num)
         }
 
-        r = requests.post('https://libraryofbabel.info/titler.cgi', data=data)
+        headers = {
+            'pragma': 'no-cache',
+            'cache-control': 'no-cache'
+        }
+
+
+        r = requests.post('https://libraryofbabel.info/titler.cgi', headers=headers, data=data)
         titles = r.text.split(";")
         return [Book.Book(self.hex, int(self.wall), int(self.shelf_num), i, titles[i-1]) for i in range(1, 33)]
 
     def get_books(self):
+        if self._books is None:
+            self._books = self.init_books()
         return self._books.copy()

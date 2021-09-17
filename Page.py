@@ -1,3 +1,4 @@
+from pprint import pprint
 import py_babel_library
 import requests
 from bs4 import BeautifulSoup
@@ -12,7 +13,7 @@ class Page():
         self.book = book
         self.page_num = page_num
         self.client = BabelClient()
-        self._content = self.init_content()
+        self._content = None
 
     def init_content(self):
         hexagon = self.hex.lower()
@@ -32,13 +33,29 @@ class Page():
             "wall": str(self.wall), 
             "shelf": str(self.shelf),
             "volume": str(volume),
-            "page": str(self.page_num)
+            "page": str(self.page_num),
+            "title": ""
         }
 
-        r = requests.post(url, data=data)
+        headers = {
+            'pragma': 'no-cache',
+            'cache-control': 'no-cache'
+        }
+
+        pprint(data)
+
+        r = requests.post(url, headers=headers, data=data)
+
+        print(r.text)
+
         page_soup = BeautifulSoup(r.text, "html.parser")
         text = page_soup.find("pre", {"id": "textblock"})
-        return text
+        return text.text
     
     def get_content(self):
+        if self._content is None:
+            self._content = self.init_content()
         return self._content
+    
+    def __str__(self):
+        return self.get_content()

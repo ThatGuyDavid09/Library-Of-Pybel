@@ -12,7 +12,12 @@ class Book():
         self.title = title
         self.book_num = book_num
         self.client = BabelClient()
-        self._pages = [Page.Page(hex, wall, shelf, book_num, i) for i in range(1, 411)]
+        self._pages = None
 
     def get_pages(self):
+        if self._pages is None:
+            self._pages = [Page.Page(self.hex, self.wall, self.shelf, self.book_num, i) for i in range(1, 411)]
         return self._pages.copy()
+    
+    def __str__(self):
+        return f"<Book {self.title}>"

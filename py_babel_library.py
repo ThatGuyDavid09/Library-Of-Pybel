@@ -13,7 +13,7 @@ class BabelClient():
 
     # Ensure passed string is only lowercase letters or numbers, the format the website accepts
     def check_valid_format(self, string):
-        return bool(re.match("^[\da-z]+$", string))
+        return bool(re.match("^[\da-z]+$", str(string)))
 
     def check_in_bounds(self, wall, shelf, volume, page):
         return 1 <= int(wall) <= 4 and 1 <= int(shelf) <= 5 and 1 <= int(volume) <= 32 and 1 <= int(page) <= 410
@@ -21,7 +21,7 @@ class BabelClient():
     def get_hexagon(self, h):
         hexagon = h.lower()
         if not self.check_valid_format(hexagon):
-            raise ValueError("Hexagon format invalid")
+            raise ValueError(f"Hexagon format {hexagon} invalid")
         
         return Hexagon.Hexagon(h)
     
@@ -30,6 +30,9 @@ class BabelClient():
     
     def get_shelf(self, h, wall, shelf):
         return self.get_hexagon(h).get_walls()[wall - 1].get_shelves()[shelf - 1]
+
+    def get_book(self, h, wall, shelf, volume):
+        return self.get_hexagon(h).get_walls()[wall - 1].get_shelves()[shelf - 1].get_books()[volume - 1]
 
     def get_page(self, h, wall, shelf, v, page):
         return self.get_hexagon(h).get_walls()[wall - 1].get_shelves()[shelf - 1].get_books()[v - 1].get_pages()[page - 1]
@@ -60,8 +63,11 @@ class BabelClient():
 
 def main():
     client = BabelClient()
-    page = client.get_page("12", 2, 3, 10, 123)
-    print(page)
+    # page = client.get_page("12", 2, 3, 10, 123)
+    # print(page.get_content())
+    content = client.get_page("123", 1, 2, 3, 4).get_content()
+    #print(content)
+    pyperclip.copy(content)
 
 if __name__ == "__main__":
     main()
