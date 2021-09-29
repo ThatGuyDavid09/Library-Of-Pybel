@@ -65,7 +65,7 @@ def main():
     client = BabelClient()
     # page = client.get_page("12", 2, 3, 10, 123)
     # print(page.get_content())
-    content = client.get_page("123", 1, 2, 3, 4).get_content()
+    content = client.get_page("123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123", 1, 2, 3, 4).get_content()
     #print(content)
     pyperclip.copy(content)
 

@@ -42,11 +42,7 @@ class Page():
             'cache-control': 'no-cache'
         }
 
-        pprint(data)
-
-        r = requests.post(url, headers=headers, data=data)
-
-        print(r.text)
+        r = requests.post(url, headers=headers, json=data)
 
         page_soup = BeautifulSoup(r.text, "html.parser")
         text = page_soup.find("pre", {"id": "textblock"})
